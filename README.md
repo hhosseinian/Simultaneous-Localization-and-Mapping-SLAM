@@ -1,4 +1,4 @@
-# SLAM (Simultaneous Localization and Mapping) Project
+# Simultaneous Localization and Mapping (SLAM)
 
 ## Overview
 This repository contains the code and documentation for my project on Simultaneous Localization and Mapping (SLAM). SLAM is a fundamental technique in robotics that allows a robot to map its environment and determine its own location within that environment in real-time.
