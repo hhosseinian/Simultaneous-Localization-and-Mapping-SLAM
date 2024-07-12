@@ -18,7 +18,7 @@ In this project, I have implemented SLAM for a 2-dimensional world using Python 
 
 ## Project Structure
 
-Sure, here is the revised version:
+The project directory is organized as follows:
 
 1. **Robot Moving and Sensing.ipynb**: This notebook involves localizing a robot in a 2D grid world, forming the basis for simultaneous localization and mapping (SLAM). The robot gathers sensor data and movement information to reconstruct a map of its environment. Due to inherent uncertainties in robot motion and sensors, the project addresses how to handle these inaccuracies.
 
