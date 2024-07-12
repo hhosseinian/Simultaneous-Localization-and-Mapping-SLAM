@@ -17,10 +17,20 @@ In this project, I have implemented SLAM for a 2-dimensional world using Python 
 - Kalman Filter
 
 ## Project Structure
-- `src/`: Contains the source code for the SLAM implementation.
-- `data/`: Includes sample data or datasets used for testing.
-- `notebooks/`: Jupyter notebooks for experimentation and visualization.
-- `docs/`: Documentation and project report.
+
+The project directory is organized as follows:
+
+1. **Robot Moving and Sensing.ipynb**: This notebook involves localizing a robot in a 2D grid world, forming the basis for simultaneous localization and mapping (SLAM). The robot gathers sensor data and movement information to reconstruct a map of its environment. Due to inherent uncertainties in robot motion and sensors, the project addresses how to handle these inaccuracies.
+
+    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
+
+2. **Omega and Xi, Constraints.ipynb**: This notebook implements Graph SLAM using a matrix (omega) and a vector (xi) to represent robot poses and landmarks. Each observation updates these structures, creating numerical relationships between poses and landmarks.
+
+    The project demonstrates solving linear systems of equations to determine pose values using linear algebra, specifically the product of the inverse of omega and xi. It also covers creating motion constraints and how these constraints fill the omega and xi matrices, affecting relationships between poses and landmarks.
+
+    The final goal is to extend this to a 2D case, incorporating both x and y positional values for a comprehensive SLAM solution.
+
+3. **Landmark Detection and Tracking.ipynb**: In this notebook, you will implement Simultaneous Localization and Mapping (SLAM) for a robot navigating a 2D grid world. The goal of SLAM is to both localize the robot and map its environment using real-time sensor data. You will define a function `slam` that calculates the robot's trajectory and the positions of landmarks in the environment, updating the constraints matrix and vector based on motion and measurement noise. The implementation involves initializing constraints, updating them iteratively with sensor measurements and motion data, and finally computing the best estimate of the robot's path and landmark locations using matrix operations. The project includes visualizations to validate the SLAM algorithm's performance against the true positions of the robot and landmarks.
 
 ## Getting Started
 1. Clone the repository to your local machine.
