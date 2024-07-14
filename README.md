@@ -31,6 +31,8 @@ The project directory is organized as follows:
     The final goal is to extend this to a 2D case, incorporating both x and y positional values for a comprehensive SLAM solution.
 
 3. **Landmark Detection and Tracking.ipynb**: In this notebook, you will implement Simultaneous Localization and Mapping (SLAM) for a robot navigating a 2D grid world. The goal of SLAM is to both localize the robot and map its environment using real-time sensor data. You will define a function `slam` that calculates the robot's trajectory and the positions of landmarks in the environment, updating the constraints matrix and vector based on motion and measurement noise. The implementation involves initializing constraints, updating them iteratively with sensor measurements and motion data, and finally computing the best estimate of the robot's path and landmark locations using matrix operations. The project includes visualizations to validate the SLAM algorithm's performance against the true positions of the robot and landmarks.
+4. **helpers.py**: This function displays the environment of a robot within a square grid of a specified size. It optionally includes a list of landmark positions to visualize within the grid.
+5. **robot_class.py**: This Python script defines a robot class that simulates a robot operating in a 2D x-y space. The robot initially points in a random direction and moves in a straight line until it approaches a wall, at which point it stops. It senses the x- and y-distances to landmarks, simplifying the implementation of SLAM (Simultaneous Localization and Mapping) by avoiding complex range and bearing calculations.
 
 ## Getting Started
 1. Clone the repository to your local machine.
