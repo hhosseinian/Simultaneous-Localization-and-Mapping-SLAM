@@ -22,7 +22,7 @@ The project directory is organized as follows:
 
 1. **Robot Moving and Sensing.ipynb**: This notebook involves localizing a robot in a 2D grid world, forming the basis for simultaneous localization and mapping (SLAM). The robot gathers sensor data and movement information to reconstruct a map of its environment. Due to inherent uncertainties in robot motion and sensors, the project addresses how to handle these inaccuracies.
 
-    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
+    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides us through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
 
 2. **Omega and Xi, Constraints.ipynb**: This notebook implements Graph SLAM using a matrix (omega) and a vector (xi) to represent robot poses and landmarks. Each observation updates these structures, creating numerical relationships between poses and landmarks.
 
@@ -39,8 +39,13 @@ The project directory is organized as follows:
 2. Navigate to the `src/` directory.
 3. Run the main SLAM script to start the simulation.
 
-## Usage
+## Usage (Under Revision)
 Provide instructions on how to run the project and any dependencies or libraries needed.
+-  How they can implement SLAM in their project (Under Revision)
+-  Describe the core functions and a few examples of modifications (Under Revision)
+-  How they can enhance it to a 3D SLAM. (Under Revision)
+
+## Results (Under Revision)
 
 ## Acknowledgments
 - [Udacity](https://www.udacity.com) for the course and project inspiration.
