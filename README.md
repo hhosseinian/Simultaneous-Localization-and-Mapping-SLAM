@@ -22,7 +22,7 @@ The project directory is organized as follows:
 
 1. **Robot Moving and Sensing.ipynb**: This notebook involves localizing a robot in a 2D grid world, forming the basis for simultaneous localization and mapping (SLAM). The robot gathers sensor data and movement information to reconstruct a map of its environment. Due to inherent uncertainties in robot motion and sensors, the project addresses how to handle these inaccuracies.
 
-    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
+    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides us through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
 
 2. **Omega and Xi, Constraints.ipynb**: This notebook implements Graph SLAM using a matrix (omega) and a vector (xi) to represent robot poses and landmarks. Each observation updates these structures, creating numerical relationships between poses and landmarks.
 
@@ -31,14 +31,21 @@ The project directory is organized as follows:
     The final goal is to extend this to a 2D case, incorporating both x and y positional values for a comprehensive SLAM solution.
 
 3. **Landmark Detection and Tracking.ipynb**: In this notebook, you will implement Simultaneous Localization and Mapping (SLAM) for a robot navigating a 2D grid world. The goal of SLAM is to both localize the robot and map its environment using real-time sensor data. You will define a function `slam` that calculates the robot's trajectory and the positions of landmarks in the environment, updating the constraints matrix and vector based on motion and measurement noise. The implementation involves initializing constraints, updating them iteratively with sensor measurements and motion data, and finally computing the best estimate of the robot's path and landmark locations using matrix operations. The project includes visualizations to validate the SLAM algorithm's performance against the true positions of the robot and landmarks.
+4. **helpers.py**: This function displays the environment of a robot within a square grid of a specified size. It optionally includes a list of landmark positions to visualize within the grid.
+5. **robot_class.py**: This Python script defines a robot class that simulates a robot operating in a 2D x-y space. The robot initially points in a random direction and moves in a straight line until it approaches a wall, at which point it stops. It senses the x- and y-distances to landmarks, simplifying the implementation of SLAM (Simultaneous Localization and Mapping) by avoiding complex range and bearing calculations.
 
 ## Getting Started
 1. Clone the repository to your local machine.
 2. Navigate to the `src/` directory.
 3. Run the main SLAM script to start the simulation.
 
-## Usage
+## Usage (Under Revision)
 Provide instructions on how to run the project and any dependencies or libraries needed.
+-  How they can implement SLAM in their project (Under Revision)
+-  Describe the core functions and a few examples of modifications (Under Revision)
+-  How they can enhance it to a 3D SLAM. (Under Revision)
+
+## Results (Under Revision)
 
 ## Acknowledgments
 - [Udacity](https://www.udacity.com) for the course and project inspiration.
