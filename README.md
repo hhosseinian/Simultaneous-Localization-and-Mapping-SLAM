@@ -48,6 +48,5 @@ Provide instructions on how to run the project and any dependencies or libraries
 ## Results (Under Revision)
 
 ## Acknowledgments
-- [Udacity](https://www.udacity.com) for the course and project inspiration.
-
+This project is part of the Udacity Computer Vision Nanodegree program.
 Feel free to explore the code and documentation for more details about the project. If you have any questions or feedback, please don't hesitate to reach out.
