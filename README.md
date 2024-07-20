@@ -47,6 +47,9 @@ Provide instructions on how to run the project and any dependencies or libraries
 
 ## Results (Under Revision)
 
+## Troubleshooting
+Please keep me posted if you faced any problem while running the code. I will keep the troubleshooting posted in WiKi pages. 
+
 ## Acknowledgments
 This project is part of the Udacity Computer Vision Nanodegree program.
 Feel free to explore the code and documentation for more details about the project. If you have any questions or feedback, please don't hesitate to reach out.
