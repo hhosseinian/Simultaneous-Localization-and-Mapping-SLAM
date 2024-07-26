@@ -45,8 +45,20 @@ Provide instructions on how to run the project and any dependencies or libraries
 -  Describe the core functions and a few examples of modifications (Under Revision)
 -  How they can enhance it to a 3D SLAM. (Under Revision)
 
-## Results (Under Revision)
-- Briefly summarize what they expect to see here.
+## Results
+
+### Expected Outcomes
+
+Upon running the SLAM simulation, you should observe:
+
+- **Map Visualization:**  
+  A visual representation of the robot's environment, including landmarks detected and mapped by the robot.
+
+- **Robot Trajectory:**  
+  A plot showing the estimated path of the robot as it moves through the environment, compared against its true path if available.
+
+- **Accuracy Metrics:**  
+  Metrics evaluating the accuracy of the SLAM algorithm, such as the error between estimated and actual landmark positions, will be displayed.
 
 ## Troubleshooting
 Please keep me posted if you faced any problem while running the code. I will keep the troubleshooting posted in WiKi pages. 
