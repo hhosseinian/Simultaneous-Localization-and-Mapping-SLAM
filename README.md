@@ -1,4 +1,7 @@
 # Simultaneous Localization and Mapping (SLAM)
+<a target="_blank" href="https://colab.research.google.com/github/hhosseinian/Simultaneous-Localization-and-Mapping-SLAM">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
 
 ## Overview
 This repository contains the code and documentation for my project on Simultaneous Localization and Mapping (SLAM). SLAM is a fundamental technique in robotics that allows a robot to map its environment and determine its own location within that environment in real-time.
