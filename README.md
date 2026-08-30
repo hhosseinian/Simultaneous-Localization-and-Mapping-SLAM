@@ -4,68 +4,102 @@
 </a>
 
 ## Overview
-This repository contains the code and documentation for my project on Simultaneous Localization and Mapping (SLAM). SLAM is a fundamental technique in robotics that allows a robot to map its environment and determine its own location within that environment in real-time.
+A from-scratch implementation of **GraphSLAM** for a simulated robot moving in a 2D grid world:
+build an information-form constraint matrix from motion and landmark-range measurements, then
+solve once for the entire trajectory and map via a single MAP (maximum a posteriori) estimate.
+Originally a project for Udacity's Computer Vision Nanodegree — the pieces implemented here
+(the noisy sensing model and the constraint-matrix/solve) are graph-based batch estimation, not
+computer vision; see [What this is / isn't](#what-this-is--isnt) below.
 
-## Project Description
-In this project, I have implemented SLAM for a 2-dimensional world using Python and various libraries. The project includes the following key components:
-- Sensor and motion data simulation for a virtual robot.
-- Real-time tracking of the robot's location.
-- Landmark detection and mapping, including buildings, trees, rocks, and more.
-- Integration of the Kalman Filter for enhanced accuracy and robustness.
+## How it works
 
-## Technologies Used
-- Python
-- PyTorch
-- CUDA (optional)
-- Kalman Filter
+![GraphSLAM pose graph: pose chain with motion constraints, landmark nodes with measurement constraints](images/pose_graph.png)
 
-## Project Structure
-
-The project directory is organized as follows:
-
-1. **Robot Moving and Sensing.ipynb**: This notebook involves localizing a robot in a 2D grid world, forming the basis for simultaneous localization and mapping (SLAM). The robot gathers sensor data and movement information to reconstruct a map of its environment. Due to inherent uncertainties in robot motion and sensors, the project addresses how to handle these inaccuracies.
-
-    Key components include defining a robot class with functionalities for movement and sensing landmarks within a specified range, incorporating noise factors. The notebook guides us through initializing the robot, simulating movements, creating landmarks, and implementing a sense function to measure distances to visible landmarks.
-
-2. **Omega and Xi, Constraints.ipynb**: This notebook implements Graph SLAM using a matrix (omega) and a vector (xi) to represent robot poses and landmarks. Each observation updates these structures, creating numerical relationships between poses and landmarks.
-
-    The project demonstrates solving linear systems of equations to determine pose values using linear algebra, specifically the product of the inverse of omega and xi. It also covers creating motion constraints and how these constraints fill the omega and xi matrices, affecting relationships between poses and landmarks.
-
-    The final goal is to extend this to a 2D case, incorporating both x and y positional values for a comprehensive SLAM solution.
-
-3. **Landmark Detection and Tracking.ipynb**: In this notebook, you will implement Simultaneous Localization and Mapping (SLAM) for a robot navigating a 2D grid world. The goal of SLAM is to both localize the robot and map its environment using real-time sensor data. You will define a function `slam` that calculates the robot's trajectory and the positions of landmarks in the environment, updating the constraints matrix and vector based on motion and measurement noise. The implementation involves initializing constraints, updating them iteratively with sensor measurements and motion data, and finally computing the best estimate of the robot's path and landmark locations using matrix operations. The project includes visualizations to validate the SLAM algorithm's performance against the true positions of the robot and landmarks.
-4. **helpers.py**: This function displays the environment of a robot within a square grid of a specified size. It optionally includes a list of landmark positions to visualize within the grid.
-5. **robot_class.py**: This Python script defines a robot class that simulates a robot operating in a 2D x-y space. The robot initially points in a random direction and moves in a straight line until it approaches a wall, at which point it stops. It senses the x- and y-distances to landmarks, simplifying the implementation of SLAM (Simultaneous Localization and Mapping) by avoiding complex range and bearing calculations.
-
-## Getting Started
-1. Clone the repository to your local machine.
-2. Navigate to the `src/` directory.
-3. Run the main SLAM script to start the simulation.
-
-## Usage (Under Revision)
-Provide instructions on how to run the project and any dependencies or libraries needed.
--  How they can implement SLAM in their project (Under Revision)
--  Describe the core functions and a few examples of modifications (Under Revision)
--  How they can enhance it to a 3D SLAM. (Under Revision)
+- **World**: the robot moves in a straight line in a random direction inside a square grid
+  until it nears a wall, then picks a new direction. It senses the `(dx, dy)` offset to any
+  landmark within range, both corrupted by additive noise (`robot_class.py`).
+- **Estimator — GraphSLAM**: every motion step and every landmark observation adds a quadratic
+  penalty term to an information matrix `Omega` and information vector `xi`
+  (`initialize_constraints`, `slam` in `3. Landmark Detection and Tracking.ipynb`). After all
+  data is collected, the full trajectory and map are recovered in one shot:
+  `mu = inv(Omega) @ xi`.
 
 ## Results
 
-### Expected Outcomes
+A 60-step run, 6 landmarks, `world_size=100`, `motion_noise = measurement_noise = 1.0`:
 
-Upon running the SLAM simulation, you should observe:
+| | value |
+|---|---|
+| mean pose error | 1.03 (world units) |
+| mean landmark error | 0.97 (world units) |
+| estimates within predicted 1-sigma | 66 / 66 (100%) |
 
-- **Map Visualization:**  
-  A visual representation of the robot's environment, including landmarks detected and mapped by the robot.
+![True vs. estimated trajectory and map](images/trajectory_estimate.png)
 
-- **Robot Trajectory:**  
-  A plot showing the estimated path of the robot as it moves through the environment, compared against its true path if available.
+![Realized error vs. the information matrix's own predicted uncertainty](images/uncertainty_vs_error.png)
 
-- **Accuracy Metrics:**  
-  Metrics evaluating the accuracy of the SLAM algorithm, such as the error between estimated and actual landmark positions, will be displayed.
+Every pose and landmark estimate in this run landed inside the uncertainty the information
+matrix itself predicted — the estimator's self-reported confidence matched its actual accuracy.
+See the "Beyond the assignment" section of `3. Landmark Detection and Tracking.ipynb` for the code.
+
+## Connection to my own localization research
+
+My PhD work is this same question asked one step removed. ["Positioning for Visible Light
+Communication System Exploiting Multipath Reflections"](https://arxiv.org/abs/1707.08203) (ICC
+2017) localizes a receiver from multipath features in an indoor optical channel; ["Performance
+Limits for Fingerprinting-Based Indoor Optical Communication Positioning Systems"](https://arxiv.org/abs/1804.09360)
+(IEEE Photonics Journal, 2020) derives the Cramer-Rao lower bound on how accurate that kind of
+estimate can ever be, given the same channel model. Both are **single-shot** problems: one
+measurement (or one channel snapshot), one location, one bound.
+
+GraphSLAM is the same idea taken **sequential**. Instead of bounding one estimate from one
+measurement, it accumulates information from many motion and measurement constraints into a
+single information matrix `Omega`, then inverts it once for the whole trajectory. `Omega` is a
+Fisher information matrix in exactly the sense the CRLB derivation uses one — it is just built
+incrementally, over time steps, instead of for a single measurement. The uncertainty check above
+(`inv(Omega)`'s diagonal vs. the realized error) is the same fundamental-limits question — *is the
+estimator's own reported confidence honest?* — asked of a dynamic estimator instead of a static
+one.
+
+## What this is / isn't
+
+- **Is**: a working GraphSLAM implementation — information-form batch MAP estimation — with a
+  from-scratch noisy sensing model, validated against both ground truth and its own
+  information-matrix uncertainty.
+- **Isn't**: a Kalman filter (no recursive predict/update loop or time-varying covariance
+  propagation), real-time (it's a single batch solve over the whole trajectory, not an online
+  per-step estimate), or computer vision (no images or camera model — a synthetic landmark-range
+  simulation).
+
+## Project structure
+
+1. **`Robot Moving and Sensing.ipynb`**: localizes a robot in a 2D grid world using only noisy
+   motion and sensing data — the groundwork for SLAM. Defines the robot class's movement and
+   landmark-sensing behavior, including noise.
+2. **`Omega and Xi, Constraints.ipynb`**: introduces the GraphSLAM information matrix (`Omega`)
+   and information vector (`xi`) on a small example, and how motion/measurement constraints fill
+   them in, before extending to the full 2D case.
+3. **`Landmark Detection and Tracking.ipynb`**: the full implementation — `initialize_constraints`
+   and `slam` build `Omega`/`xi` from a whole run's worth of motion and measurement data, solve
+   for `mu = inv(Omega) @ xi`, and validate the result against ground truth and (in the "Beyond
+   the assignment" section) against the information matrix's own predicted uncertainty.
+4. **`helpers.py`**: `display_world` (grid visualization) and `make_data` (drives the robot
+   through a randomized run and collects the motion/measurement data `slam` consumes).
+5. **`robot_class.py`**: the 2D robot — moves in a straight line until near a wall, then senses
+   `(dx, dy)` to nearby landmarks (deliberately not range/bearing, to keep the estimator's math
+   simple).
+
+## Getting started
+1. Clone the repository.
+2. Open `1. Robot Moving and Sensing.ipynb` first, then `2. Omega and Xi, Constraints.ipynb`,
+   then `3. Landmark Detection and Tracking.ipynb` (each builds on the last).
+3. Or open directly in Colab via the badge above.
 
 ## Troubleshooting
-Please keep me posted if you faced any problem while running the code. I will keep the troubleshooting posted in WiKi pages. 
+Please let me know if you run into any problems running the code.
 
 ## Acknowledgments
-This project is part of the Udacity Computer Vision Nanodegree program.
-Feel free to explore the code and documentation for more details about the project. If you have any questions or feedback, please don't hesitate to reach out.
+This project began as part of Udacity's Computer Vision Nanodegree program; the GraphSLAM
+implementation, the accuracy validation, and the information-matrix uncertainty check are my own
+extensions beyond the original assignment. Feel free to explore the code — questions and feedback
+welcome.
